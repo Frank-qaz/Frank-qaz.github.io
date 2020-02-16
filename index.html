@@ -152,19 +152,19 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-我的第一篇博客" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-数据库课程设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/02/14/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">我的第一篇博客</a>
+      <a class="article-title" href="/2020/02/14/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/">数据库课程设计</a>
     </h1>
   
 
         
-        <a href="/2020/02/14/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="archive-article-date">
+        <a href="/2020/02/14/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/" class="archive-article-date">
   	<time datetime="2020-02-14T11:26:47.361Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-14</time>
 </a>
         
@@ -172,11 +172,151 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h2><p>内容</p>
+        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>  首先我来说明一下我为什么要写这一篇博客：其一这是我的第一篇博客，其二我是想把我上学期期末所做的数据库课设完整的保留下来  最后我还有一个想法是帮助那些后来者，能在我这里找到对自己想要找到的东西。当然这有没有人来看这还是个问题哈。行，话不多说赶紧开始吧</p>
 <hr>
-<h2 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h2><p>内容</p>
+<h2 id="所需材料"><a href="#所需材料" class="headerlink" title="所需材料"></a>所需材料</h2><p>  我界面的设计是基于Java做的，所以我用的是eclipse，当然还要下载一个mysql数据库，我们学校里给我们一个叫jdk-7u7-windows-i586<br>用来连接你的Java和数据库的文件，你如果觉得自己用命令行来建数据库太麻烦的话，你还可以去下一个Navicat这是一个可视化的建数据库<br>的一个工具，网上有14天免费试用版的，推荐去下一个</p>
 <hr>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>codesheep.cn</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>  1.安装eclipse，至于如何安装以及如何怎么配置环境变量这里我就不再赘述，自己去网上查<br>  2.安装mysql、Navicat<br>  3.用 jdk-7u7-windows-i586来做连接。如何连接–“在 Eclipse 中，鼠标选中项目工程，右键点击 Build Path，选择 Configure Build Path，会<br>跳出一个属性框图。选择 Java Build Path 下的 Libraries，点击 JRE System Library，查看是否<br>有 mssql-jdbc-6.2.2.jre7.jar 或 mssql-jdbc-6.2.2.jre8.jar。如果没有，点击 Add External JARs，<br>浏览到 JDBC 的 MySQL 驱动的 jar 包，点击确定，将其导入到项目中”当然这是不够的，还需要再eclipse中，在你创建的包下写两个连接文件<br>DbProcess和JTextFieldHintListener内容如下</p>
+<p>DbProcess：</p>
+<pre><code>package Franker2sson;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class DbProcess{
+    Connection connection = null;
+    ResultSet rs = null;
+
+    //mysql数据库url
+    String userMySql=&quot;root&quot;; 
+    String passwordMySql=&quot;&quot;;
+    String urlMySql = &quot;jdbc:mysql://localhost:3306/mysql?user=&quot;
+            +userMySql+&quot;&amp;password=&quot;+passwordMySql + &quot;&amp;useUnicode=true&amp;characterEncoding=UTF-8&quot;;
+
+    //sqlserver数据库url
+    //String urlSqlServer = &quot;jdbc:sqlserver://localhost:1433;integratedSecurity=true;DatabaseName=InfoDb&quot;;
+
+    public DbProcess() {
+        try {
+            //mysql数据库设置驱动程序类型
+            Class.forName(&quot;com.mysql.jdbc.Driver&quot;); 
+            System.out.println(&quot;mysql数据库驱动加载成功&quot;);
+
+            //sqlserver数据库设置驱动程序类型
+            //Class.forName(&quot;com.microsoft.sqlserver.jdbc.SQLServerDriver&quot;);
+            //System.out.println(&quot;sqlserver数据库驱动加载成功&quot;);
+
+        }
+        catch(java.lang.ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void connect(){
+        try{
+            //mysql数据库
+            connection = DriverManager.getConnection(urlMySql);  
+
+            //sqlserver数据库
+            //connection = DriverManager.getConnection(urlSqlServer);
+
+
+            if(connection!=null){
+                System.out.println(&quot;数据库连接成功&quot;);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void disconnect(){
+        try{
+            if(connection != null){
+                connection.close();
+                connection = null;
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public ResultSet executeQuery(String sql) {
+        try {
+            System.out.println(&quot;executeQuery(). sql = &quot; + sql);
+
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            // 执行查询
+            rs = pstm.executeQuery();
+        } 
+        catch(SQLException ex) { 
+            ex.printStackTrace();
+        }
+        return rs;
+    }
+
+    //插入
+    //executeUpdate 的返回值是一个整数，指示受影响的行数（即更新计数）。
+    //executeUpdate用于执行 INSERT、UPDATE 或 DELETE 语句
+    //以及 SQL DDL（数据定义语言）语句，例如 CREATE TABLE 和 DROP TABLE。
+
+    //执行增、删、改语句的方法
+    public int executeUpdate(String sql) {
+        int count = 0;
+        connect();
+        try {
+            Statement stmt = connection.createStatement();
+            count = stmt.executeUpdate(sql);
+        } 
+        catch(SQLException ex) { 
+            System.err.println(ex.getMessage());        
+        }
+        disconnect();
+        return count;
+    }
+}</code></pre><p>JTextFieldHintListener：</p>
+<pre><code>package Franker2sson;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+
+public class JTextFieldHintListener implements FocusListener {
+    private String mHintText;
+    private JTextField mTextField;
+
+    public JTextFieldHintListener(String hintText, JTextField textField) {
+        this.mHintText = hintText;
+        this.mTextField = textField;
+        textField.setForeground(Color.GRAY);
+    }
+    @Override
+    public void focusGained(FocusEvent e) {
+        // TODO Auto-generated method stub
+         String temp = mTextField.getText();
+            if(temp.equals(mHintText)){
+                mTextField.setText(&quot;&quot;);
+                mTextField.setForeground(Color.BLACK);
+            }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        // TODO Auto-generated method stub
+        String temp = mTextField.getText();
+        if(temp.equals(&quot;&quot;)){
+            mTextField.setForeground(Color.GRAY);
+            mTextField.setText(mHintText);
+        }
+    }
+
+}</code></pre><hr>
 
       
 
@@ -189,7 +329,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/02/14/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/02/14/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/">展开全文 >></a>
         </p>
       
 
